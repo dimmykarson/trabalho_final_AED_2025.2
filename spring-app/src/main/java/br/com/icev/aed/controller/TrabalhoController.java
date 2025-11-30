@@ -376,4 +376,62 @@ public class TrabalhoController {
         
         return ResponseEntity.ok(response);
     }
+    
+    /**
+     * DELETE - Limpar todos os testes do banco de dados
+     * DELETE /api/trabalhos/limpar-testes
+     */
+    @DeleteMapping("/limpar-testes")
+    public ResponseEntity<Map<String, Object>> limparTestes() {
+        try {
+            long count = testesTrabalhoRepository.count();
+            testesTrabalhoRepository.deleteAll();
+            
+            logger.info("Todos os {} testes foram removidos do banco de dados", count);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("sucesso", true);
+            response.put("mensagem", "Todos os testes foram removidos do banco de dados");
+            response.put("testesRemovidos", count);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Erro ao limpar testes", e);
+            Map<String, Object> response = new HashMap<>();
+            response.put("sucesso", false);
+            response.put("erro", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
+    
+    /**
+     * DELETE - Limpar TUDO do banco de dados (trabalhos e testes)
+     * DELETE /api/trabalhos/limpar-tudo
+     */
+    @DeleteMapping("/limpar-tudo")
+    public ResponseEntity<Map<String, Object>> limparTudo() {
+        try {
+            long countTestes = testesTrabalhoRepository.count();
+            long countTrabalhos = trabalhoRepository.count();
+            
+            testesTrabalhoRepository.deleteAll();
+            trabalhoRepository.deleteAll();
+            
+            logger.warn("BANCO LIMPO: {} trabalhos e {} testes removidos", countTrabalhos, countTestes);
+            
+            Map<String, Object> response = new HashMap<>();
+            response.put("sucesso", true);
+            response.put("mensagem", "Banco de dados completamente limpo");
+            response.put("trabalhosRemovidos", countTrabalhos);
+            response.put("testesRemovidos", countTestes);
+            
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            logger.error("Erro ao limpar banco de dados", e);
+            Map<String, Object> response = new HashMap<>();
+            response.put("sucesso", false);
+            response.put("erro", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
+        }
+    }
 }

@@ -32,7 +32,7 @@ public class TestesEficienciaService {
     private TestesTrabalhoRepository testesTrabalhoRepository;
 
     // Número de execuções para cada teste
-    private static final int NUMERO_EXECUCOES = 500;
+    private static final int NUMERO_EXECUCOES = 50;
 
     // Thresholds de performance em milissegundos (tempo máximo aceitável)
     private static final double THRESHOLD_DESAFIO_1 = 50.0;   // Set - 50ms

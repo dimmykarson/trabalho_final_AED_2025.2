@@ -22,6 +22,9 @@ public interface TestesTrabalhoRepository extends JpaRepository<TestesTrabalho, 
     // Busca testes por categoria
     List<TestesTrabalho> findByCategoria(String categoria);
     
+    // Busca testes de um trabalho específico por categoria
+    List<TestesTrabalho> findByTrabalhoAndCategoria(Trabalho trabalho, String categoria);
+    
     // Busca o último teste de um trabalho
     TestesTrabalho findFirstByTrabalhoOrderByHorarioInicioDesc(Trabalho trabalho);
 }
